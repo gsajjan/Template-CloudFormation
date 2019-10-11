@@ -7,7 +7,8 @@ You can deploy a bastion host/instance to reduce the attack surface of internal 
 
 ## Infrastructure Architecture
 
- - [VPC with private and public subnets Image](https://github.com/gsajjan/Template-CloudFormation/blob/master/Images/VPC-Template.png)
+ - ![VPC-Parametr-ParentStack](https://user-images.githubusercontent.com/15983893/66628911-d5ff5d00-ec1d-11e9-95cf-a0b3f59c0107.PNG)
+
 
 ## Parameters
 
