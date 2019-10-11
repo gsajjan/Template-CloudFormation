@@ -7,7 +7,7 @@ You can deploy a bastion host/instance to reduce the attack surface of internal 
 
 ## Infrastructure Architecture
 
-
+ Images/VPC-Template.png
 
 ## Parameters
 
