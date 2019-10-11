@@ -1,0 +1,197 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "AWS CloudFormation",
+    "Parameters": {
+        "KeyName": {
+            "Description": "The SSH key pair in your account to use for all other WebServer instance logins",
+            "Type": "AWS::EC2::KeyPair::KeyName"
+        },
+        "InstanceType": {
+            "Description": "Instance type to launch EC2 instances.",
+            "Type": "String",
+            "Default": "t2.micro",
+            "AllowedValues": [
+                "t3.micro",
+                "t3.medium",
+                "t2.micro"
+            ]
+        },
+        "MyImageId": {
+            "Description": "Image ID",
+            "Type": "AWS::EC2::Image::Id"
+        },
+        "ParentStackName": {
+            "Description": "parentstack",
+            "Type": "String"
+        },
+         "myExampleBucket": {
+            "Description": "Enter S3 Bucket Name",
+            "Type": "String"
+        }
+        
+        
+      
+       
+    },
+    
+    "Resources": {
+        "myDummyRole": {
+         "Type": "AWS::IAM::Role",
+         "Properties": {
+            "AssumeRolePolicyDocument": {
+               "Statement": [{
+                  "Effect": "Allow",
+                  "Principal": {
+                     "Service": ["ec2.amazonaws.com"]
+                  },
+                  "Action": ["sts:AssumeRole"]
+               }]
+            },
+            "Path": "/"
+         }
+      },
+
+      "myDummyInstanceProfile": {
+         "Type": "AWS::IAM::InstanceProfile",
+         "Properties": {
+            "Path": "/",
+            "Roles": [{ "Ref": "myDummyRole" }]
+         }
+      },
+
+      "myDummyRolePolicies": {
+         "Type": "AWS::IAM::Policy",
+         "Properties": {
+            "PolicyName": "myDummy",
+            "PolicyDocument": {
+               "Statement": [{
+                  "Effect": "Allow",
+                  "Action": ["s3:PutObject",
+        "s3:GetObject",
+        "s3:DeleteObject"],
+                  "Resource": { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "myExampleBucket" } , "/*" ]]}
+               }]
+            },
+            "Roles": [{ "Ref": "myDummyRole" }]
+         }
+      },
+
+        "IPAddress": {
+            "Type": "AWS::EC2::EIP",
+            "Properties": {
+                "Domain": "vpc",
+                "InstanceId": {
+                    "Ref": "Ec2Instance"
+                }
+            }
+            
+        },
+        "Ec2Instance": {
+            "Type": "AWS::EC2::Instance",
+            "Properties": {
+                "ImageId": {
+                    "Ref": "MyImageId"
+                },
+                "InstanceType": {
+                    "Ref": "InstanceType"
+                },
+                "SecurityGroupIds": [
+                    {
+                        "Ref": "SecurityGroup"
+                    }
+                ],
+                "SubnetId": {
+                    "Fn::ImportValue": {
+                        "Fn::Sub": "${ParentStackName}-DbserverId"
+                    }
+                },
+                "KeyName": {
+                    "Ref": "KeyName"
+                },
+                "IamInstanceProfile": {
+                    "Ref": "myDummyInstanceProfile"
+                }
+            }
+            
+            
+        },
+        "SecurityGroup": {
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "GroupDescription": "Nagios Security Group",
+                "VpcId": {
+                    "Fn::ImportValue": {
+                        "Fn::Sub": "${ParentStackName}-VPCID"
+                    }
+                },
+                "SecurityGroupIngress": [
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "22",
+                        "ToPort": "22",
+                        "CidrIp": "0.0.0.0/0"
+                    }
+                ]
+            }
+            
+        },
+       "S3Endpoint" : {
+            "Type" : "AWS::EC2::VPCEndpoint",
+            "Properties" : {
+                "PolicyDocument" : {
+                    "Version":"2012-10-17",
+                    "Statement":[{
+                        "Effect":"Allow",
+                        "Principal": "*",
+                        "Action": ["s3:PutObject",
+        "s3:GetObject",
+        "s3:DeleteObject"],
+                 "Resource": { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "myExampleBucket" } , "/*" ]]}
+                    }]
+                },
+            "RouteTableIds" : [{  "Fn::ImportValue": {
+                        "Fn::Sub": "${ParentStackName}-PrivateRouteTableID"
+                    } }],
+            "ServiceName" : { 
+                "Fn::Sub": "com.amazonaws.${AWS::Region}.s3" 
+            },
+            "VpcId" : {
+                "Fn::ImportValue": {
+                        "Fn::Sub": "${ParentStackName}-VPCID"
+                    }
+            }
+        }
+    }
+    },
+    "Outputs": {
+        "InstanceId": {
+            "Value": {
+                "Ref": "Ec2Instance"
+            },
+            "Description": "Instance Id of newly created instance",
+            "Export" : {
+                "Name" : {"Fn::Sub": "${AWS::StackName}-InstanceID" }
+            }
+        },
+        "IPAddress": {
+            "Value": {
+                "Ref": "IPAddress"
+            },
+            "Description": "Public IP address of instance",
+            "Export" : {
+                "Name" : {"Fn::Sub": "${AWS::StackName}-IPAddressID" }
+            }
+        },
+        "S3Endpoint": {
+            "Value": {
+                "Ref": "S3Endpoint"
+            },
+            "Description": "Public IP address of instance",
+            "Export" : {
+                "Name" : {"Fn::Sub": "${AWS::StackName}-S3EndpointId" }
+            }
+        }
+        
+    }
+    
+}
