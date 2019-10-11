@@ -6,7 +6,8 @@ If you want to access the Internet from a private subnet you need to create a NA
 You can deploy a bastion host/instance to reduce the attack surface of internal applications.
 
 ## Infrastructure Architecture
-[VPC Full function Image](https://github.com/gsajjan/Template-CloudFormation/blob/master/Images/VPC-Template.png)
+![VPC-Template](https://user-images.githubusercontent.com/15983893/66629423-58d4e780-ec1f-11e9-88aa-a7226da85f84.png)
+
  
 ## Parameters
 
