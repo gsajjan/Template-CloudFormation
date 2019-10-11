@@ -6,10 +6,8 @@ If you want to access the Internet from a private subnet you need to create a NA
 You can deploy a bastion host/instance to reduce the attack surface of internal applications.
 
 ## Infrastructure Architecture
-
+[VPC Full function Image](https://github.com/gsajjan/Template-CloudFormation/blob/master/Images/VPC-Template.png)
  
-
-
 ## Parameters
 
 ![VPC-Parametr-ParentStack](https://user-images.githubusercontent.com/15983893/66628911-d5ff5d00-ec1d-11e9-95cf-a0b3f59c0107.PNG)
@@ -22,6 +20,7 @@ Today we are simplifying access to S3 resources from within a VPC by introducing
 EC2 instances running in private subnets of a VPC can now have controlled access to S3 buckets, objects, and API functions that are in the same region as the VPC. You can use an S3 bucket policy to indicate which VPCs and which VPC Endpoints have access to your S3 buckets.   
 
 ## Infrastructure Architecture   
+[VPC-Endpoint-S3-Image] ()
 
 
 ## Parameters
