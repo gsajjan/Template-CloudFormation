@@ -9,7 +9,7 @@ You can deploy a bastion host/instance to reduce the attack surface of internal 
 
 
 
-##Parameters
+## Parameters
 
 
 # Using CloudFormation VPC endpoints with S3
@@ -21,7 +21,7 @@ EC2 instances running in private subnets of a VPC can now have controlled access
 ## Infrastructure Architecture   
 
 
-##Parameters
+## Parameters
 
 
 
