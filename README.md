@@ -25,9 +25,9 @@ EC2 instances running in private subnets of a VPC can now have controlled access
 
 
 
-#For more information:
+### For more information:
 - [Setting Up VPC Endpoints for AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-vpce-bucketnames.html).
 - [Interface VPC Endpoint (for CloudFormation)](https://docs.aws.amazon.com/vpc/latest/userguide/vpce-interface.html)
 - [Gateway VPC Endpoints (for S3)](https://docs.aws.amazon.com/vpc/latest/userguide/vpce-gateway.html)
 - [AWS::EC2::VPCEndpoint](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-vpcendpoint.html)
-- [Creating Wait Conditions in a Template](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-waitcondition.html)# Template-CloudFormation
+- [Creating Wait Conditions in a Template](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-waitcondition.html)
